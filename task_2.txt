@@ -1,0 +1,23 @@
+//создание базы данных
+CREATE DATABASE library
+
+//книги
+CREATE TABLE `library`.`books` ( `id` INT NOT NULL AUTO_INCREMENT , `title` VARCHAR(255) NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
+
+//авторы
+CREATE TABLE `library`.`authors` ( `id` INT NOT NULL AUTO_INCREMENT , `name` VARCHAR(255) NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
+
+//книги за авторством
+CREATE TABLE `library`.`books_by_authors` ( `id_name` INT NOT NULL , `id_title` INT NOT NULL ) ENGINE = InnoDB;
+
+//связать id_title c id книги
+ALTER TABLE `books_by_authors` ADD FOREIGN KEY (`id_title`) REFERENCES `books`(`id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
+
+//связать id_name c id автора
+ALTER TABLE `books_by_authors` ADD FOREIGN KEY (`id_name`) REFERENCES `authors`(`id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
+
+//запрос
+SELECT authors.name FROM
+authors JOIN books_by_authors ON authors.id = books_by_authors.id_name
+GROUP BY name
+HAVING COUNT(name)<7
